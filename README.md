@@ -86,6 +86,18 @@ Open `index.html` in your browser or use a local development server such as Live
 
 ---
 
+## Firebase Setup
+
+This project does not include the Firebase configuration file.
+
+1. Create a Firebase project.
+2. Copy `firebaseConfig.example.js`.
+3. Rename the copy to `firebaseConfig.js`.
+4. Replace the placeholder values with your own Firebase configuration.
+5. Enable Firebase Authentication and Cloud Firestore before running the application.
+
+---
+
 ## Screenshots
 
 Include screenshots of:
