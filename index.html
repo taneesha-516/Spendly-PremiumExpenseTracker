@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spendly - Premium Expense Tracker</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Premium Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Login Page -->
+  <div id="login-page" class="login-page-container">
+    <div class="login-card">
+      <div class="login-header-logo">
+        <div class="app-logo">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <span class="app-title">Spendly</span>
+      </div>
+      <h2 id="login-page-title">Welcome to Spendly</h2>
+      <p id="login-page-subtitle">Sign in to track your expenses and manage your budgets in real-time.</p>
+      
+      <div class="login-tabs">
+        <button id="tab-login" class="login-tab-btn active">Sign In</button>
+        <button id="tab-register" class="login-tab-btn">Sign Up</button>
+      </div>
+
+      <form id="email-login-form">
+        <div class="form-group">
+          <label for="login-email-input">Email Address *</label>
+          <input type="email" id="login-email-input" class="form-control" required placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label for="login-password-input">Password *</label>
+          <input type="password" id="login-password-input" class="form-control" required placeholder="••••••••">
+        </div>
+        <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block">Sign In</button>
+      </form>
+
+      <div class="login-divider">
+        <span>or</span>
+      </div>
+
+      <button type="button" id="google-login-btn" class="btn btn-secondary btn-block">
+        <i class="fa-brands fa-google"></i> Continue with Google
+      </button>
+    </div>
+  </div>
+
+  <div class="app-container hidden">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="app-logo">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <span class="app-title">Spendly</span>
+        
+        <!-- Top Navigation Bar -->
+        <nav class="header-nav">
+          <button class="nav-item active" data-tab="dashboard">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item" data-tab="analytics">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Analytics</span>
+          </button>
+          <button class="nav-item" data-tab="search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search & Reports</span>
+          </button>
+          <button class="nav-item" data-tab="checklist">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Checklist</span>
+          </button>
+          <button class="nav-item" data-tab="emis">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>EMIs</span>
+          </button>
+          <button class="nav-item" data-tab="trips">
+            <i class="fa-solid fa-plane"></i>
+            <span>Trips</span>
+          </button>
+          <button class="nav-item" data-tab="categories">
+            <i class="fa-solid fa-tags"></i>
+            <span>Categories</span>
+          </button>
+        </nav>
+      </div>
+      <div class="header-right">
+        <button id="add-expense-btn" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i> Add Expense
+        </button>
+
+        <button id="export-excel-btn" class="btn btn-secondary">
+          <i class="fa-solid fa-file-excel"></i> Export Excel
+        </button>
+        
+        <button id="theme-toggle-btn" class="btn btn-icon" title="Toggle Light/Dark Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="logout-btn" class="btn btn-secondary btn-sm hidden" title="Log Out">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Logout</span>
+        </button>
+        <div class="user-avatar" title="Jordan Adams" id="user-avatar">
+          <span>JD</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- App Body (Content Area) -->
+    <div class="app-body">
+      
+      <!-- Main Content Area -->
+      <main class="app-content">
+
+        <!-- Banner for EMI alerts -->
+        <div id="emi-alert-banner" class="alert-banner hidden">
+          <div class="alert-content">
+            <i class="fa-solid fa-circle-info"></i>
+            <span id="emi-alert-text">Auto-generated monthly EMI transactions successfully.</span>
+          </div>
+          <button class="alert-close-btn">&times;</button>
+        </div>
+
+        <!-- TAB: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-pane active">
+          
+          <!-- Hero greeting -->
+          <div class="dashboard-hero">
+            <h1 class="welcome-heading">Hey there, Jordan</h1>
+            <p class="welcome-subheading">Here's your spending overview for this week.</p>
+          </div>
+
+          <!-- Weekly Budget Setting -->
+          <div style="margin-bottom:20px;">
+           <label for="weekly-budget-input">Weekly Budget (₹)</label>
+            <input
+            type="number"
+            id="weekly-budget-input"
+            min="0"
+            value="1500"
+  >
+</div>
+
+<!-- Cards Row -->
+<div class="metrics-grid">
+            
+            <div class="metric-card">
+              <div class="metric-content">
+                <span class="metric-label">Total This Week</span>
+                <span id="metric-total-week" class="metric-value">₹919</span>
+                <div class="metric-trend trend-up">
+                  <i class="fa-solid fa-arrow-up"></i>
+                  <span>12.4% vs last week</span>
+                </div>
+              </div>
+              <div class="metric-icon-wrapper">
+                <i class="fa-solid fa-wallet"></i>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-content">
+                <span class="metric-label">Total This Month</span>
+                <span id="metric-daily-average" class="metric-value">₹131</span>
+                <div class="metric-trend trend-down">
+                  <i class="fa-solid fa-arrow-down"></i>
+                  <span>Current month</span>
+                </div>
+              </div>
+              <div class="metric-icon-wrapper">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-content">
+                <span class="metric-label">Budget Left</span>
+                <span id="metric-budget-left" class="metric-value">₹581</span>
+                <div class="metric-trend trend-up">
+                  <i class="fa-solid fa-arrow-up"></i>
+                  <span>8.1% vs last week</span>
+                </div>
+              </div>
+              <div class="metric-icon-wrapper">
+                <i class="fa-solid fa-piggy-bank"></i>
+              </div>
+            </div>
+            
+
+          </div>
+
+          <!-- Chart Visualizations -->
+          <div class="charts-grid">
+            
+            <!-- Spline Chart Card -->
+            <div class="chart-card line-chart-card">
+              <div class="chart-header">
+                <div>
+                  <h3 class="chart-title">Weekly Spending</h3>
+                  <p class="chart-subtitle">Total expenses across the last 7 days</p>
+                </div>
+                <div class="chart-total-stat">
+                  <span id="weekly-spending-total" class="total-stat-value">₹806</span>
+                  <span class="stat-badge"><span class="pulse-dot"></span> Live</span>
+                </div>
+              </div>
+              <div class="chart-body">
+                <canvas id="weeklySpendingChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Donut Chart Card -->
+            <div class="chart-card donut-chart-card">
+              <div class="chart-header">
+                <div>
+                  <h3 class="chart-title">Spending by Category</h3>
+                  <p class="chart-subtitle">Breakdown for the current week</p>
+                </div>
+              </div>
+              <div class="chart-body donut-chart-body">
+                <div class="donut-chart-container">
+                  <canvas id="categoryDonutChart"></canvas>
+                  <div class="donut-center-text">
+                    <span id="donut-total-value" class="donut-total-num">₹1,019</span>
+                    <span class="donut-total-label">Total</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Category legend items rendered in JS -->
+              <div id="donut-legend-container" class="donut-legend"></div>
+            </div>
+
+          </div>
+
+          <!-- Recent Transactions -->
+          <div class="panel recent-transactions-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">Recent Transactions</h3>
+              <div class="panel-actions">
+                <button id="view-all-transactions-btn" class="btn btn-secondary btn-sm">View All</button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="table-responsive">
+                <table class="transactions-table">
+                  <thead>
+                    <tr>
+                      <th>Merchant / Description</th>
+                      <th>Category</th>
+                      <th>Payment Mode</th>
+                      <th>Date</th>
+                      <th class="text-right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-transactions-tbody">
+                    <!-- Dynamic rendering -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- TAB: ANALYTICS -->
+        <section id="tab-analytics" class="tab-pane">
+          <div class="section-header">
+            <h2>Detailed Visualizations</h2>
+<p>Track monthly and weekly patterns across categories</p>
+
+<div class="analytics-filters card">
+    <div class="filter-row">
+        <div class="form-group">
+            <label for="analytics-year-select">Year</label>
+            <select id="analytics-year-select" class="form-control"></select>
+        </div>
+
+        <div class="form-group">
+            <label for="analytics-month-select">Month</label>
+            <select id="analytics-month-select" class="form-control"></select>
+        </div>
+    </div>
+</div>
+
+<div class="analytics-charts-grid">
+    <div class="chart-card card">
+        <h3 class="card-title">Category Breakdown for Month</h3>
+        <div style="max-height:300px; position:relative;">
+            <canvas id="monthlyCategoryBarChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card card">
+        <h3 class="card-title">Weekly Expense Trends</h3>
+        <div style="max-height:300px; position:relative;">
+            <canvas id="monthlyTrendLineChart"></canvas>
+        </div>
+    </div>
+</div>
+        </section>
+
+        <!-- TAB: SEARCH & REPORTS -->
+        <section id="tab-search" class="tab-pane">
+          <div class="section-header">
+            <h2>Search & Summarize Expenses</h2>
+            <p>Filter by specific cards, categories, dates, and get instantly calculated financial summaries</p>
+          </div>
+
+          <!-- Filter Form Card -->
+          <div class="card search-filter-card">
+            <div class="search-filter-grid">
+              
+              <div class="form-group">
+                <label for="search-category">Category</label>
+                <select id="search-category" class="form-control">
+                  <option value="all">All Categories</option>
+                  <!-- Rendered dynamically -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="search-mode">Payment Mode</label>
+                <select id="search-mode" class="form-control">
+                  <option value="all">All Modes</option>
+                  <option value="Credit Card">Credit Card</option>
+                  <option value="Debit Card">Debit Card</option>
+                  <option value="Cash">Cash</option>
+                  <option value="UPI">UPI</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="search-bank">Bank Name (For Cards)</label>
+                <input type="text" id="search-bank" class="form-control" placeholder="e.g. Chase, Apple Card">
+              </div>
+
+              <div class="form-group">
+                <label for="search-start-date">From Date</label>
+                <input type="date" id="search-start-date" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="search-end-date">To Date</label>
+                <input type="date" id="search-end-date" class="form-control">
+              </div>
+
+            </div>
+
+            <div class="filter-actions">
+              <button id="search-reset-btn" class="btn btn-secondary">Clear Filters</button>
+              <button id="search-submit-btn" class="btn btn-primary">
+                <i class="fa-solid fa-magnifying-glass"></i> Search & Analyze
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Summary Output -->
+          <div id="search-summary-widget" class="summary-widget card hidden">
+            <div class="summary-widget-header">
+              <div class="header-icon">
+                <i class="fa-solid fa-calculator"></i>
+              </div>
+              <div>
+                <h3 class="widget-title">Search Summary Report</h3>
+                <p id="search-summary-range" class="widget-subtitle">Summary for all dates</p>
+              </div>
+            </div>
+            <div class="summary-metrics">
+              <div class="sum-metric">
+                <span class="sum-metric-label">Filtered Spending</span>
+                <span id="sum-total-amount" class="sum-metric-value">₹0.00</span>
+              </div>
+              <div class="sum-metric">
+                <span class="sum-metric-label">Transactions Count</span>
+                <span id="sum-total-count" class="sum-metric-value">0</span>
+              </div>
+              <div class="sum-metric">
+                <span class="sum-metric-label">Highest Expense</span>
+                <span id="sum-max-expense" class="sum-metric-value">₹0.00</span>
+              </div>
+            </div>
+            <div id="search-summary-narrative" class="summary-narrative">
+              <!-- Load state from localStorage or Firestore based on auth status
+function loadState() {
+  if (currentUser) {
+    // Load from Firestore
+    db.collection('users').doc(currentUser.uid).get()
+      .then(doc => {
+        if (doc.exists) {
+          const data = doc.data();
+
+          state.expenses = data.expenses || [];
+          state.categories = data.categories || [...window.SpendlyDefaults.defaultCategories];
+          state.checklist = data.checklist || [];
+          state.emis = data.emis || [];
+          state.trips = data.trips || [];
+        } else {
+          state.expenses = [];
+          state.categories = [...window.SpendlyDefaults.defaultCategories];
+          state.checklist = [];
+          state.emis = [];
+          state.trips = [];
+        }
+
+        state.theme = localStorage.getItem('spendly_theme') || 'light';
+        initTheme();
+        renderApp();
+      })
+      .catch(err => console.error('Error loading Firestore data:', err));
+
+  } else {
+
+    const storedExpenses = localStorage.getItem('spendly_expenses');
+    const storedCategories = localStorage.getItem('spendly_categories');
+    const storedChecklist = localStorage.getItem('spendly_checklist');
+    const storedEmis = localStorage.getItem('spendly_emis');
+    const storedTrips = localStorage.getItem('spendly_trips');
+    const storedTheme = localStorage.getItem('spendly_theme');
+
+    state.expenses = storedExpenses ? JSON.parse(storedExpenses) : [];
+    state.categories = storedCategories ? JSON.parse(storedCategories) : [...window.SpendlyDefaults.defaultCategories];
+    state.checklist = storedChecklist ? JSON.parse(storedChecklist) : [];
+    state.emis = storedEmis ? JSON.parse(storedEmis) : [];
+    state.trips = storedTrips ? JSON.parse(storedTrips) : [];
+
+    state.theme = storedTheme || 'light';
+    initTheme();
+    renderApp();
+  }
+}
+A to date B is..." -->
+            </div>
+          </div>
+
+          <!-- Results Table -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3 class="panel-title">Matching Transactions</h3>
+            </div>
+            <div class="panel-body">
+              <div class="table-responsive">
+                <table class="transactions-table">
+                  <thead>
+                    <tr>
+                      <th>Merchant</th>
+                      <th>Category</th>
+                      <th>Payment Mode</th>
+                      <th>Bank</th>
+                      <th>Date</th>
+                      <th>Notes</th>
+                      <th class="text-right">Amount</th>
+                      <th style="width: 80px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="search-results-tbody">
+                    <tr>
+                      <td colspan="8" class="text-center">Use the filter criteria above to search transactions.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          
+        </section>
+
+        <!-- TAB: CHECKLIST -->
+
+        <section id="tab-checklist" class="tab-pane">
+
+  <div class="section-header">
+    <h2>Future Payment Reminders</h2>
+    <p>Track upcoming bills, subscriptions and payments.</p>
+  </div>
+
+  <div class="card mb-4">
+    <div style="padding:20px;">
+     <button id="add-checklist-btn" class="btn btn-primary">
+    <i class="fa-solid fa-plus"></i>
+    Add Checklist Item  
+</button>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3>Upcoming Payments</h3>
+    </div>
+    <ul id="checklist-unpaid-ul" class="checklist-list"></ul>
+  </div>
+
+  
+
+</section>
+
+        <!-- TAB: EMIs TRACKER -->
+         <section id="tab-checklist" class="tab-pane">
+  <div class="section-header">
+    <h2>Payment Reminder Checklist</h2>
+    <p>Track future payments and mark them as completed.</p>
+  </div>
+
+  <div class="card" style="padding:20px; margin-bottom:20px;">
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <input
+        type="text"
+        id="checklist-input"
+        class="form-control"
+        placeholder="Enter payment reminder..."
+        style="flex:1;"
+      >
+
+      <input
+        type="date"
+        id="checklist-date"
+        class="form-control"
+      >
+
+      <button
+        id="add-checklist-btn"
+        class="btn btn-primary"
+      >
+        <i class="fa-solid fa-plus"></i>
+        Add Reminder
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div id="checklist-container"></div>
+  </div>
+</section>
+
+
+        <!-- TAB: EMIs TRACKER -->
+        <section id="tab-emis" class="tab-pane">
+          <div class="section-header">
+            <h2>EMI (Equated Monthly Installment) Tracker</h2>
+            <p>Add your recurring EMI plans, track duration, and let Spendly auto-generate expense logs in future/required months.</p>
+            <button id="add-emi-btn" class="btn btn-primary mt-2">
+              <i class="fa-solid fa-plus"></i> Track New EMI
+            </button>
+          </div>
+
+
+          <div class="panel">
+            <div class="panel-header">
+              <h3 class="panel-title">Active & Completed EMI Plans</h3>
+            </div>
+            <div class="panel-body">
+              <div class="table-responsive">
+                <table class="transactions-table">
+                  <thead>
+                    <tr>
+                      <th>EMI Name</th>
+                      <th>Monthly Amount</th>
+                      <th>Principal Amount</th>
+                      <th>Total Payment</th>
+                      <th>INTEREST PAID</th>
+                      <th>Category</th>
+                      <th>Mode of Payment</th>
+                      <th>Bank Name</th>
+                      <th>Start Month</th>
+                      <th>Duration</th>
+                      <th>Auto-Generate</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="emis-tbody">
+                    <!-- Dynamic rendering -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB: TRIPS / GROUPED EXPENSES -->
+        <section id="tab-trips" class="tab-pane">
+          <div class="section-header">
+            <h2>Grouped Expenses (Trips / Projects)</h2>
+            <p>Group expenses together (like a trip, vacation, or shared event) to keep track of specialized budgets, and display their summary gists on the dashboard.</p>
+            <button id="add-trip-btn" class="btn btn-primary mt-2">
+              <i class="fa-solid fa-plus"></i> Create New Trip Group
+            </button>
+          </div>
+
+          <!-- Trip Dashboard & Detail view -->
+          <div class="trip-dashboard-layout">
+            
+            <!-- Left Side: List of trips -->
+            <div class="card trip-list-panel">
+              <h3 class="panel-title mb-3">Trips Groups</h3>
+              <div id="trips-cards-container" class="trips-cards-grid">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Right Side: Active Trip Details -->
+            <div class="card trip-detail-panel">
+              <div id="trip-detail-content">
+                <div class="text-center text-muted p-5">
+                  <i class="fa-solid fa-plane-departure fa-3x mb-3"></i>
+                  <p>Select a trip group from the list to view detailed expenses, budget allocations, and visual breakdowns.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- TAB: CATEGORIES -->
+        <section id="tab-categories" class="tab-pane">
+          <div class="section-header">
+            <h2>Manage Categories</h2>
+            <p>Customize expense categories, assign unique premium colors, and icons to style your dashboard.</p>
+            <button id="add-category-btn" class="btn btn-primary mt-2">
+              <i class="fa-solid fa-plus"></i> Create Custom Category
+            </button>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h3 class="panel-title">Available Categories</h3>
+            </div>
+            <div class="panel-body">
+              <div class="categories-grid" id="categories-list-grid">
+                <!-- Dynamic grid -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal Backdrop -->
+  <div id="modal-backdrop" class="modal-backdrop hidden"></div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal-window hidden">
+      <div class="modal-header">
+        <h3 class="modal-title">Login</h3>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <form id="login-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="login-email">Email *</label>
+            <input type="email" id="login-email" class="form-control" required placeholder="you@example.com">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password *</label>
+            <input type="password" id="login-password" class="form-control" required placeholder="Password">
+          </div>
+          <div class="form-group">
+            <button type="button" id="google-signin-btn" class="btn btn-outline-primary btn-block">
+              <i class="fa-brands fa-google"></i> Sign in with Google
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+      </form>
+    </div>
+
+  <!-- Modal: Add / Edit Expense -->
+  <div id="expense-modal" class="modal-window hidden">
+    <div class="modal-header">
+      <h3 id="expense-modal-title" class="modal-title">Add Expense</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="expense-form">
+      <input type="hidden" id="expense-edit-id">
+      <div class="modal-body">
+        
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="exp-form-title">Merchant / Description *</label>
+            <input type="text" id="exp-form-title" class="form-control" required placeholder="e.g. Whole Foods">
+          </div>
+          <div class="form-group col-6">
+            <label for="exp-form-amount">Amount (₹) *</label>
+            <input type="number" step="0.01" id="exp-form-amount" class="form-control" required placeholder="0.00">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="exp-form-category">Category *</label>
+            <select id="exp-form-category" class="form-control" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div class="form-group col-6">
+            <label for="exp-form-date">Date *</label>
+            <input type="date" id="exp-form-date" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="exp-form-mode">Payment Mode *</label>
+            <select id="exp-form-mode" class="form-control" required>
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="Others">Others</option>
+
+            </select>
+          </div>
+          <div class="form-group col-6" id="exp-bank-group" style="display:none;">
+            <label for="exp-form-bank">Bank Name *</label>
+            <input type="text" id="exp-form-bank" class="form-control" placeholder="e.g. Chase">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-12">
+            <label for="exp-form-trip">Associate with Trip / Group</label>
+            <select id="exp-form-trip" class="form-control">
+              <option value="">None (Personal)</option>
+              <!-- Dynamic trips -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="exp-form-notes">Notes</label>
+          <textarea id="exp-form-notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+        </div>
+
+        <div class="form-group">
+  
+</div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Expense</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal: Add Custom Category -->
+  <div id="category-modal" class="modal-window hidden">
+    <div class="modal-header">
+      <h3 class="modal-title">Create Custom Category</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="category-form">
+      <div class="modal-body">
+        
+        <div class="form-group">
+          <label for="cat-form-name">Category Name *</label>
+          <input type="text" id="cat-form-name" class="form-control" required placeholder="e.g. Subscriptions">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="cat-form-color">Color Code *</label>
+            <div class="color-picker-wrapper">
+              <input type="color" id="cat-form-color" class="form-control color-picker" value="#3b82f6">
+            </div>
+          </div>
+          <div class="form-group col-6">
+            <label for="cat-form-icon">Select Icon *</label>
+            <select id="cat-form-icon" class="form-control" required>
+              <option value="fa-tags">Tag</option>
+              <option value="fa-utensils">Food / Restuarant</option>
+              <option value="fa-car">Car / Transport</option>
+              <option value="fa-shopping-bag">Bag / Shopping</option>
+              <option value="fa-bolt">Bolt / Utilities</option>
+              <option value="fa-tv">TV / Entertainment</option>
+              <option value="fa-gas-pump">Gas / Fuel</option>
+              <option value="fa-heart">Heart / Health</option>
+              <option value="fa-plane">Plane / Trip</option>
+              <option value="fa-home">Home / Rent</option>
+              <option value="fa-wallet">Wallet / Cash</option>
+              <option value="fa-circle-dollar-to-slot">Dollar / Piggy</option>
+            </select>
+          </div>
+          <div class="form-group col-12">
+  <label>
+    <input type="checkbox" id="cat-form-exclude">
+    Exclude from spending analytics
+  </label>
+  <small>
+    Expenses in this category will not be counted in Weekly Expense or Spending by Category charts, but will still appear in monthly totals and search results.
+  </small>
+</div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Category</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal: Add Checklist / Future Payment -->
+  <div id="checklist-modal" class="modal-window hidden">
+    <div class="modal-header">
+      <h3 class="modal-title">Schedule Future Payment</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="checklist-form">
+      <div class="modal-body">
+        
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="chk-form-title">Payment Title *</label>
+            <input type="text" id="chk-form-title" class="form-control" required placeholder="e.g. Rent">
+          </div>
+          <div class="form-group col-6">
+            <label for="chk-form-amount">Estimated Amount (₹) *</label>
+            <input type="number" step="0.01" id="chk-form-amount" class="form-control" required placeholder="0.00">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="chk-form-category">Category *</label>
+            <select id="chk-form-category" class="form-control" required>
+              <!-- Dynamic options -->
+            </select>
+          </div>
+          <div class="form-group col-6">
+            <label for="chk-form-due">Due Date *</label>
+            <input type="date" id="chk-form-due" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="chk-form-mode">Intended Payment Mode</label>
+            <select id="chk-form-mode" class="form-control">
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="Others">Others</option>
+
+            </select>
+          </div>
+          <div class="form-group col-6" id="chk-bank-group">
+            <label for="chk-form-bank">Bank Name </label>
+            <input type="text" id="chk-form-bank" class="form-control" placeholder="e.g. Chase">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="chk-form-notes">Notes</label>
+          <textarea id="chk-form-notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Schedule Bill</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal: Track EMI Plan -->
+  <div id="emi-modal" class="modal-window hidden">
+    <div class="modal-header">
+      <h3 class="modal-title">Track EMI Plan</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="emi-form">
+      <div class="modal-body">
+        
+        <div class="form-row">
+  <div class="form-group col-6">
+    <label for="emi-form-title">EMI Plan Name *</label>
+    <input type="text" id="emi-form-title" class="form-control" required placeholder="e.g. Laptop Installments">
+  </div>
+
+  <div class="form-group col-6">
+    <label for="emi-form-amount">Monthly Installment (₹) *</label>
+    <input type="number" step="0.01" id="emi-form-amount" class="form-control" required placeholder="0.00">
+  </div>
+
+  <div class="form-group col-6">
+    <label for="emi-form-principal">Loan Amount (Without Interest) (₹) *</label>
+    <input
+      type="number"
+      step="0.01"
+      id="emi-form-principal"
+      class="form-control"
+      required
+      placeholder="0.00">
+  </div>
+
+  
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="emi-form-category">Category *</label>
+            <select id="emi-form-category" class="form-control" required>
+              <!-- Dynamic categories -->
+            </select>
+          </div>
+          <div class="form-group col-6">
+            <label for="emi-form-start">Start Month *</label>
+            <input type="month" id="emi-form-start" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="emi-form-duration">Duration (Months) *</label>
+            <input type="number" id="emi-form-duration" class="form-control" required min="1" placeholder="e.g. 12">
+          </div>
+          <div class="form-group col-6">
+            <label for="emi-form-mode">Payment Mode *</label>
+            <select id="emi-form-mode" class="form-control" required>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6" id="emi-bank-group">
+            <label for="emi-form-bank">Bank Name </label>
+            <input type="text" id="emi-form-bank" class="form-control" placeholder="e.g. Chase">
+          </div>
+          <div class="form-group col-6 d-flex align-items-center mt-4">
+            <label class="toggle-switch">
+              <input type="checkbox" id="emi-form-auto" checked>
+              <span class="slider round"></span>
+            </label>
+            <span class="ml-2 font-size-sm">Auto-generate monthly expenses</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="emi-form-notes">Additional Notes</label>
+          <textarea id="emi-form-notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Track EMI</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal: Create Trip Group -->
+  <div id="trip-modal" class="modal-window hidden">
+    <div class="modal-header">
+      <h3 class="modal-title">Create Trip Group</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="trip-form">
+      <div class="modal-body">
+        
+        <div class="form-group">
+          <label for="trip-form-name">Trip Name *</label>
+          <input type="text" id="trip-form-name" class="form-control" required placeholder="e.g. Vacation in Tokyo">
+        </div>
+
+        <div class="form-group">
+          <label for="trip-form-budget">Total Trip Budget (₹) *</label>
+          <input type="number" id="trip-form-budget" class="form-control" required placeholder="1000.00">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Trip</button>
+      </div>
+    </form>
+  </div>
+
+<script src="mockData.js"></script>
+<script src="chartHelper.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="app.js"></script>
+
+
+</body>
+</html>
