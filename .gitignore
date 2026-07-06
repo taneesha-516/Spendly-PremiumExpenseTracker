@@ -141,3 +141,13 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Firebase
+firebaseConfig.js
+
+node_modules/
+firebaseConfig.js
+.env
+.env.*
+dist/
+build/
